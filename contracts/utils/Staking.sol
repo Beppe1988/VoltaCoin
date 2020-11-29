@@ -18,5 +18,21 @@ library Stake {
         return false;
     }
 
+    function addStake(address addr, uint256 qty, Stakeholders[] storage addrList) public{
+        if(isStakeholder(addr,addrList)){
+            for(uint256 s=0; s<addrList.length; s+=1){
+                if(addr == addrList[s]._address && addrList[s]._stake != qty){
+                    addrList[s]._stake = qty;
+                }
+            }
 
+        }
+
+        if(!isStakeholder(addr, addrList)){
+            addrList.push()._address = addr;
+            addrList.push()._stake = qty;
+        }
+
+
+    }
 }
