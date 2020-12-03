@@ -2,12 +2,10 @@
 
 pragma solidity ^0.7.0;
 
-import "contracts/token/ERC20/ERC20.sol" ;
+import "./token/ERC20/ERC20.sol";
 
 contract VoltaCoin is ERC20 {
     
-    using SafeERC20 for IERC20;
-
     constructor() ERC20("VoltaCoin", "VOLT") {
         _mint(msg.sender, 100000);
     }
