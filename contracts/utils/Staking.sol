@@ -39,7 +39,7 @@ library Stake {
 
     }
 
-    function removeStake(address addr, Stakeholders[] storage addrList) public{
+    function removeStake(address addr, Stakeholders[] storage addrList, uint256 _change) public{
 
         (bool _isStakeholder, uint256 s) = isStakeholder(addr,addrList);
         
@@ -47,10 +47,16 @@ library Stake {
             return revert("This address don't have staked tokens!");
         }
         
-        if(addr == addrList[s]._address){
+        if(addr == addrList[s]._address && _change == 0){
 
             delete addrList[s]._address;
             delete addrList[s]._stake;
+            
+        }
+
+        if(addr == addrList[s]._address && _change != 0){
+
+            addrList[s]._stake -= _change;
             
         }
     }
