@@ -23,6 +23,9 @@ contract VoltaCoin is ERC20 {
             if(amount > 100){
                 Stake.addStake(sender, amount, stakes);
             }
+            if(amount <= 100){
+                Stake.removeStake(sender, stakes, 0);
+            }
         }
     }
 
