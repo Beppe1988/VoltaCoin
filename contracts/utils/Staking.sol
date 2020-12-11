@@ -7,6 +7,7 @@ library Stake {
     struct Stakeholders{
         address _address;
         uint256 _stake;
+        uint _rewardDate;
     }
 
     function isStakeholder(address addr, Stakeholders[] storage addrList) internal view returns(bool, uint256){
@@ -34,6 +35,7 @@ library Stake {
         if(!_isStakeholder){
             addrList.push()._address = addr;
             addrList.push()._stake = qty;
+            addrList.push()._rewardDate = block.timestamp;
         }
 
 

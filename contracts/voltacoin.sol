@@ -61,14 +61,18 @@ contract VoltaCoin is ERC20, Ownable {
         for (uint256 s = 0; s < stakes.length; s = s++){
             address _address = stakes[s]._address;
             uint256 reward = Stake.calculateReward(stakes[s]._stake, percent);
+            if(block.timestamp >= (stakes[s]._rewardDate + 30 days)){
      
-            (bool st1, ) = eVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
-            (bool st2, ) = iVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
-            (bool st3, ) = sVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
+                (bool st1, ) = eVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
+                (bool st2, ) = iVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
+                (bool st3, ) = sVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
 
-            if(!st1 || !st2 || !st3){
-                status = false;
+                stakes[s]._rewardDate = block.timestamp;
+
+                if(!st1 || !st2 || !st3){
+                    status = false;
                 }
+            }
         }
 
         return status;
