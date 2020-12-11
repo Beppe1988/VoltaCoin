@@ -9,7 +9,7 @@ library Stake {
         uint256 _stake;
     }
 
-    function isStakeholder(address addr, Stakeholders[] storage addrList) public view returns(bool, uint256){
+    function isStakeholder(address addr, Stakeholders[] storage addrList) internal view returns(bool, uint256){
         for(uint256 s = 0; s < addrList.length; s+=1){
             if(addr == addrList[s]._address){
                 return (true, s);
@@ -18,7 +18,7 @@ library Stake {
         return (false, 0);
     }
 
-    function addStake(address addr, uint256 qty, Stakeholders[] storage addrList) public{
+    function addStake(address addr, uint256 qty, Stakeholders[] storage addrList) internal{
 
         (bool _isStakeholder, uint256 s) = isStakeholder(addr,addrList);
 
@@ -39,7 +39,7 @@ library Stake {
 
     }
 
-    function removeStake(address addr, Stakeholders[] storage addrList, uint256 _change) public{
+    function removeStake(address addr, Stakeholders[] storage addrList, uint256 _change) internal{
 
         (bool _isStakeholder, uint256 s) = isStakeholder(addr,addrList);
         
@@ -59,5 +59,10 @@ library Stake {
             addrList[s]._stake -= _change;
             
         }
+    }
+
+    function calculateReward(uint256 _stake, uint104 percent) internal pure returns(uint256 data){
+        data = (_stake * percent) / 100;
+        return data;
     }
 }
