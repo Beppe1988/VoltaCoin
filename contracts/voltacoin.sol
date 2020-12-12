@@ -67,11 +67,16 @@ contract VoltaCoin is ERC20, Ownable {
                 Stake.addStake(_sender, _amount, stakes);
             }
             if(_amount <= 100){
-                Stake.removeStake(_sender, stakes, 0);
+                (bool _isStakeholder, uint256 _s) = Stake.isStakeholder(_sender, stakes);
+                if(_isStakeholder){
+                    _transfer(owner(),_sender, _s);
+                    Stake.removeStake(_sender, stakes, 0);
+                    }
+                }
             }
         }
-    }
-
+    
+    
     // This change reward percentage
     function percentRewardChange(uint104 _percent) private{
         percent = _percent;
