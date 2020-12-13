@@ -77,9 +77,14 @@ contract VoltaCoin is ERC20, Ownable {
         }
     
     
-    // This change reward percentage
-    function percentRewardChange(uint104 _percent) private{
+    // This edit reward percentage
+    function percentRewardSetup(uint104 _percent) private{
         percent = _percent;
+    }
+
+    function transferSubOwnership(address _address) public onlyOwner returns (bool status){
+        (status, ) = eVLT_address.call(abi.encodeWithSignature("transferOwnership(address)",_address));
+        return status;
     }
 
     /**
