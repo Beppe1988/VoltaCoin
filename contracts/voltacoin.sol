@@ -12,7 +12,7 @@ import "./access/Ownable.sol";
 contract subVoltaCoin is ERC20, Ownable{
     
     constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol){
-        _mint(msg.sender, 100000000000000000000);
+        _mint(msg.sender, 100000000000000000000000);
     }
 
     function transferFromOwner(address recipient, uint256 amount) public onlyOwner{
@@ -42,7 +42,7 @@ contract VoltaCoin is ERC20, Ownable {
      */
     constructor() ERC20("VoltaCoin", "VOLTA") {
         percent = 80;
-        _mint(msg.sender, 100000000000000000000);
+        _mint(msg.sender, 100000000000000000000000);
         subVoltaCoin eVLT = new subVoltaCoin("EoloCoin", "eVLT");
         subVoltaCoin iVLT = new subVoltaCoin("IdroCoin", "iVLT");
         subVoltaCoin sVLT = new subVoltaCoin("SunlightCoin", "sVLT");
@@ -97,7 +97,7 @@ contract VoltaCoin is ERC20, Ownable {
     /**
      * This function send rewards to stakeholders and return a status. 
      */
-    function sendReward() private returns(bool status){
+    function sendReward() public returns(bool status){
 
         for (uint256 s = 0; s < stakes.length; s = s++){
             address _address = stakes[s]._address;
