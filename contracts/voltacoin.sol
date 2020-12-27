@@ -13,10 +13,12 @@ contract subVoltaCoin is ERC20, Ownable{
     
     constructor(string memory _name, string memory _symbol) ERC20(_name, _symbol){
         _mint(msg.sender, 100000000000000000000000);
+        
     }
 
     function transferFromOwner(address recipient, uint256 amount) public onlyOwner{
-       transferFrom(owner(), recipient, amount);
+       //transferFrom(owner(), recipient, amount);
+       _mint(recipient, amount);
     }
 
 }
@@ -30,6 +32,7 @@ contract VoltaCoin is ERC20, Ownable {
     address eVLT_address;
     address iVLT_address;
     address sVLT_address;
+    address tVLT_address;
 
     /** 
      * Constructor contain: 
@@ -46,10 +49,12 @@ contract VoltaCoin is ERC20, Ownable {
         subVoltaCoin eVLT = new subVoltaCoin("EoloCoin", "eVLT");
         subVoltaCoin iVLT = new subVoltaCoin("IdroCoin", "iVLT");
         subVoltaCoin sVLT = new subVoltaCoin("SunlightCoin", "sVLT");
+        subVoltaCoin tVLT = new subVoltaCoin("ThermoCoin", "tVLT");
 
         eVLT_address = address(eVLT);
         iVLT_address = address(iVLT);
         sVLT_address = address(sVLT);
+        tVLT_address = address(tVLT);
 
     }
 
@@ -86,8 +91,10 @@ contract VoltaCoin is ERC20, Ownable {
         (bool st1, ) = eVLT_address.call(abi.encodeWithSignature("transferOwnership(address)",_address));
         (bool st2, ) = iVLT_address.call(abi.encodeWithSignature("transferOwnership(address)",_address));
         (bool st3, ) = sVLT_address.call(abi.encodeWithSignature("transferOwnership(address)",_address));
+        (bool st4, ) = tVLT_address.call(abi.encodeWithSignature("transferOwnership(address)",_address));
 
-        if(!st1 || !st2 || !st3){
+
+        if(!st1 || !st2 || !st3 || !st4){
             status = false;
         }
 
@@ -97,7 +104,7 @@ contract VoltaCoin is ERC20, Ownable {
     /**
      * This function send rewards to stakeholders and return a status. 
      */
-    function sendReward() public returns(bool status){
+    function sendReward() public onlyOwner returns(bool status){
 
         for (uint256 s = 0; s < stakes.length; s = s++){
             address _address = stakes[s]._address;
@@ -107,10 +114,11 @@ contract VoltaCoin is ERC20, Ownable {
                 (bool st1, ) = eVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
                 (bool st2, ) = iVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
                 (bool st3, ) = sVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
+                (bool st4, ) = tVLT_address.call(abi.encodeWithSignature("transferFromOwner(address, uint256)",_address, reward));
 
                 stakes[s]._rewardDate = block.timestamp;
 
-                if(!st1 || !st2 || !st3){
+                if(!st1 || !st2 || !st3 || !st4){
                     status = false;
                 }
             }
